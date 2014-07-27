@@ -1,0 +1,12 @@
+@function custom-white($opacity) {
+  @return rgba(255, 255, 255, $opacity)
+}
+
+$dim-gray: #5e6165;
+$darker-gray: #51555a;
+
+
+$my-color: custom-white(0.5);
+$my-background-color: $dim-gray;
+$my-header-color: $darker-gray;
+

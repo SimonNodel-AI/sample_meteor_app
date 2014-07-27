@@ -6,3 +6,8 @@
 standard-app-packages
 autopublish
 insecure
+sass
+velocity
+jasmine-unit
+velocity-html-reporter
+mocha-web-velocity
