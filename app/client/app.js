@@ -1,11 +1,24 @@
-if (Meteor.isClient) {
-  Template.hello.greeting = function () {
-    return "Welcome to app.";
-  }; 
+Session.setDefault("selected_movie", null);
+
+var genresHandle = Meteor.subscribe("genres");
+var moviesHandle = Meteor.subscribe("movies");
+
+Template.appBody.genresLoading = function () {
+    return !genresHandle.ready();
+}; 
+
+Template.appBody.moviesLoading = function(){
+    return !moviesHandle.ready();
 }
 
-if (Meteor.isServer) {
-  Meteor.startup(function () {
-    // code to run on server at startup
-  });
+Template.appBody.noMovies = function(){	
+    return true; //(Movies.find().count() === 0);
+}
+
+Template.movieEntryForm.genresList = function(){
+    return Genres.find();
+}
+
+Template.movieTable.movies = function(){
+    return Movies.find({}, {sort: {title:1}});
 }

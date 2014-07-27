@@ -5,7 +5,7 @@
 
 <body>
     {{> header}}
-    {{> appbody}}
+    {{> appBody}}
 </body>
 
 <template name="header">
@@ -14,8 +14,51 @@
     </div>
 </template>
 
-<template name="appbody">
+<template name="appBody">
     <div id="app-body">
-        <h2>Hello World!</h2>        
+    
+        {{#if genresLoading}}
+            {{> loading}}
+        {{else}}                
+            {{> movieEntryForm}}   
+        {{/if}}
+                
+        
+        {{#if moviesLoading}}
+            {{> loading}}
+        {{else}}
+            {{#if noMovies}}
+                {{> noMoviesTemplate}}
+            {{else}}
+                {{> movieTable}}
+            {{/if}}
+        {{/if}}       
     </div>
 </template>
+
+<template name="loading">
+    <h3>Loading ...</h3>
+</template>
+
+<template name="movieEntryForm">
+    <div id="movie-entry-form">
+        <h2>Hello World!</h2>
+        <label for="genre-list">Genres</label>
+        <select id="genre-list" name="genre-list">            
+            {{#each genresList}}
+                <option value="{{_id}}">{{name}}</option>
+            {{/each}}            
+        </select>
+    </div>
+</template>
+
+<template name="noMoviesTemplate">
+    <h3>There are no movies in your collection, please add some.</h3>
+</template>
+
+<template name="movieTable">
+    <div id="movies-table">
+        <h3>movie table goes here</h3>
+    </div>
+</template>
+ 
