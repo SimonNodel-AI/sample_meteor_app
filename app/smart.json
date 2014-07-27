@@ -3,7 +3,6 @@
     "sass": {},
     "velocity": {},
     "jasmine-unit": {},
-    "velocity-html-reporter": {},
-    "mocha-web-velocity": {}
+    "velocity-html-reporter": {}
   }
 }
