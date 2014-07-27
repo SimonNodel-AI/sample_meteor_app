@@ -1,0 +1,8 @@
+@function white($opacity) {
+  return rgba(255, 255, 255, $opacity)
+}
+
+$my-color: @white(0.5);
+$my-background-color: #5e6165;
+$my-header-color: #51555a;
+
