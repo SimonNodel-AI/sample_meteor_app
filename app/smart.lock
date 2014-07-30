@@ -2,36 +2,13 @@
   "meteor": {},
   "dependencies": {
     "basePackages": {
-      "sass": {},
-      "velocity": {},
-      "jasmine-unit": {},
-      "velocity-html-reporter": {}
+      "sass": {}
     },
     "packages": {
       "sass": {
         "git": "https://github.com/particle4dev/meteor-sass.git",
         "tag": "v0.1.7",
         "commit": "b41757f87475186b1485ec54a819d6e027ee3d88"
-      },
-      "velocity": {
-        "git": "https://github.com/xolvio/velocity.git",
-        "tag": "v0.1.16",
-        "commit": "047ee02ce4e6340bbd6229b6bed9ff81940bc22b"
-      },
-      "jasmine-unit": {
-        "git": "https://github.com/xolvio/jasmine-unit.git",
-        "tag": "v0.1.24",
-        "commit": "885dde77a96390d0fd31b03756f837f482db2ef1"
-      },
-      "velocity-html-reporter": {
-        "git": "https://github.com/rdickert/velocity-html-reporter.git",
-        "tag": "v0.1.4",
-        "commit": "55f973519fb6db831678219057854b94a4cec846"
-      },
-      "package-stubber": {
-        "git": "https://github.com/alanning/meteor-package-stubber.git",
-        "tag": "v0.0.15",
-        "commit": "62ad08f8486aacbbc5ec22ea6e2a31573748b7d7"
       }
     }
   }

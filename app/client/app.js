@@ -1,24 +1,31 @@
-Session.setDefault("selected_movie", null);
+(function () {
+        
+	Session.setDefault("selected_movie", null);
 
-var genresHandle = Meteor.subscribe("genres");
-var moviesHandle = Meteor.subscribe("movies");
+	Movies = new Meteor.Collection('movies');
+	Genres = new Meteor.Collection('genres');
 
-Template.appBody.genresLoading = function () {
-    return !genresHandle.ready();
-}; 
+	var genresHandle = Meteor.subscribe("genres");
+	var moviesHandle = Meteor.subscribe("movies");
 
-Template.appBody.moviesLoading = function(){
-    return !moviesHandle.ready();
-}
+	Template.appBody.genresLoading = function () {
+	    return !genresHandle.ready();
+	}; 
 
-Template.appBody.noMovies = function(){	
-    return true; //(Movies.find().count() === 0);
-}
+	Template.appBody.moviesLoading = function(){
+	    return !moviesHandle.ready();
+	}
 
-Template.movieEntryForm.genresList = function(){
-    return Genres.find();
-}
+	Template.appBody.noMovies = function(){	
+	    return (Movies.find().count() === 0);
+	}
 
-Template.movieTable.movies = function(){
-    return Movies.find({}, {sort: {title:1}});
-}
+	Template.movieEntryForm.genresList = function(){
+	    return Genres.find();
+	}
+
+	Template.movieTable.movies = function(){
+	    return Movies.find({}, {sort: {title:1}});
+	}
+
+})();

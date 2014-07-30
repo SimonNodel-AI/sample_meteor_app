@@ -1,2 +1,5 @@
 .meteor/local
 .meteor/meteorite
+.tmp/
+node_modules
+coverage
