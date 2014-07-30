@@ -2,8 +2,10 @@
         
 	Session.setDefault("selected_movie", null);
 
-	Movies = new Meteor.Collection('movies');
-	Genres = new Meteor.Collection('genres');
+	/*if(!Meteor.isClient) {
+		Movies = new Meteor.Collection('movies');
+		Genres = new Meteor.Collection('genres');
+	}*/
 
 	var genresHandle = Meteor.subscribe("genres");
 	var moviesHandle = Meteor.subscribe("movies");
@@ -22,6 +24,13 @@
 
 	Template.movieEntryForm.genresList = function(){
 	    return Genres.find();
+	}
+
+	Template.movieEntryForm.buttonTitle = function(){
+	    if(!Session.get("selected_movie")) {
+	    	return "Add Movie";
+	    }
+	    return "Update Movie"
 	}
 
 	Template.movieTable.movies = function(){

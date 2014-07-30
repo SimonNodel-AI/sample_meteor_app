@@ -42,18 +42,33 @@
 
 <template name="movieEntryForm">
     <div id="movie-entry-form">
-        <h2>Hello World!</h2>
-        <label for="genre-list">Genres</label>
-        <select id="genre-list" name="genre-list">            
-            {{#each genresList}}
-                <option value="{{_id}}">{{name}}</option>
-            {{/each}}            
-        </select>
+        <div class="form-control-group">
+            <label for="">Movie Title</label>
+            <input id="movie-title" type="text" />
+        </div>
+
+        <div class="form-control-group">
+            <label for="">Release Year</label>
+            <input id="movie-release-year" type="number" />
+        </div>
+
+        <div class="form-control-group">   
+            <label for="genre-list">Genre</label>
+            <select id="genre-list" name="genre-list">            
+                {{#each genresList}}
+                    <option value="{{_id}}">{{name}}</option>
+                {{/each}}            
+            </select>
+        </div>
+
+        <div class="form-control-group">
+            <button id="add-update-button" type="button">{{ buttonTitle }}</button>
+        </div>
     </div>
 </template>
 
-<template name="noMoviesTemplate">
-    <h3>There are no movies in your collection, please add some.</h3>
+<template name="noMoviesTemplate">    
+    <h3 class="no-movies">There are no movies in your collection, please add some.</h3>    
 </template>
 
 <template name="movieTable">

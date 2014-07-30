@@ -1,5 +1,13 @@
 $header-height: 74px;
 
+$form-padding: 1.25rem;
+
+@mixin add-box-sizing(){
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+}
+
 body {
   color: $my-color;
   background-color: $my-background-color;
@@ -30,3 +38,100 @@ body {
 } 
 
 
+
+///////////////////////////////////////////////////////////////////////////////
+// Movie Entry Form
+
+#movie-entry-form { 
+	overflow: hidden;    
+	padding-top: 2rem;
+	padding-bottom: 1rem;
+	border-bottom: 2px solid $border-color;
+	position: relative;
+
+
+	input {
+    	display:block;
+	}
+
+	label {		
+		display:block;
+		padding-bottom: 0.25rem;
+	}
+
+	#add-update-button {
+		position: absolute;
+		right: $form-padding;
+		bottom: auto;	
+		height: 4rem;	
+		padding: 0 2em;		
+
+		@include add-box-sizing();
+		
+	}
+
+	.form-control-group {
+		display: inline-block;
+		padding: 0 $form-padding;
+
+		label {
+			color: $my-title-color;
+		}
+	}
+
+	#movie-title {
+		float: left;
+		width: 40rem;
+	}
+
+	#movie-release-year {
+		float: left;
+		width: 14rem;
+	}
+
+	#genre-list {
+		float: left;
+		width: 25rem;
+		font-size: $font-size-large;
+	}
+}
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// No Movies
+
+h3.no-movies {	
+	padding-top: 3rem;
+	clear:both;	
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Add some style back
+
+input[type="text"], input[type="number"], button {
+	font-size: $font-size-large;	
+}
+
+input, select, textarea {
+  height: 3rem;
+  vertical-align: top;
+  @include add-box-sizing();
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Helper
+
+.float-left {
+	float:left;
+}
+
+.float-right {
+	float: right;
+}

@@ -7,6 +7,9 @@
     Template.stub('movieEntryForm');
     Template.stub('movieTable');
 
+    Movies = new Meteor.Collection('movies');
+    Genres = new Meteor.Collection('genres');
+
 
     describe('Template.appBody.genresLoading', function() {        
         it('should return true while genres are loading', function() {                      
@@ -48,16 +51,6 @@
         });
 
     });
-
-    describe('Collection instantiation', function(){
-        it('should instantiate Genres only once', function(){
-            expect(Meteor.instantiationCounts['genres']).toBe(1);
-        });
-
-        it('should instantiate Movies only once', function(){
-            expect(Meteor.instantiationCounts['movies']).toBe(1);
-        });
-    });
    
     describe('Template.movieEntryForm.genresList', function() {
         it('should return a list genres', function(){
@@ -73,6 +66,18 @@
             Template.movieTable.movies();
             expect(Movies.find).toHaveBeenCalledWith({}, {sort: {title:1}});
         });      
+    });
+
+    describe('Template.movieEntryForm.buttonTitle', function(){
+        it('should return "Add Movie" when selected_movie is not set', function(){
+            Session.set('selected_movie', null);
+            expect(Template.movieEntryForm.buttonTitle()).toEqual('Add Movie');
+        });
+
+        it('should return "Update Movie" when selected_movie is not set', function(){
+            Session.set('selected_movie', {});
+            expect(Template.movieEntryForm.buttonTitle()).toEqual('Update Movie');
+        });
     });
 
 })();
