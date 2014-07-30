@@ -80,4 +80,36 @@
         });
     });
 
+    describe('Template.movieEntryForm.events', function(){
+        describe('click #add-update-button', function(){
+            it('should invoke "createMovie" Meteor method', function(){
+                var mockTemplateInstance = {
+                    find: function(what){
+                        if(what === '#movie-title') { 
+                            return {value:'Hackers'};
+                        } else if (what === '#movie-release-year') {
+                            return {value: '1995'};
+                        } else if(what === '#genre-list') {
+                            return {value: 'DEADBEFF'};
+                        } else {
+                            throw 'Invalid find parameter';
+                        }
+                    }
+                };
+                spyOn(Meteor, 'call');
+                var eventHandler = Template.movieEntryForm.eventMap['click #add-update-button'];
+                var result = eventHandler({}, mockTemplateInstance);
+                expect(result).toBe(false);
+                expect(Meteor.call).toHaveBeenCalledWith(
+                    'createMovie', {
+                        title: 'Hackers',
+                        release_year: 1995,
+                        genre: 'DEADBEFF'
+                    }
+                );
+            })
+
+        });
+    })
+
 })();

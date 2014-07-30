@@ -2,11 +2,6 @@
         
 	Session.setDefault("selected_movie", null);
 
-	/*if(!Meteor.isClient) {
-		Movies = new Meteor.Collection('movies');
-		Genres = new Meteor.Collection('genres');
-	}*/
-
 	var genresHandle = Meteor.subscribe("genres");
 	var moviesHandle = Meteor.subscribe("movies");
 
@@ -32,6 +27,21 @@
 	    }
 	    return "Update Movie"
 	}
+
+	Template.movieEntryForm.events({
+  		'click #add-update-button': function (event, template) {
+			var movieTitle = template.find("#movie-title").value;
+			var releaseYear = template.find("#movie-release-year").value;
+			var genre = template.find("#genre-list").value;			
+    		Meteor.call("createMovie", {
+    			title: movieTitle,
+    			release_year: parseInt(releaseYear),
+    			genre: genre
+    		});
+    		console.debug('Movie: %s was added', movieTitle);    		
+    		return false;
+  		}
+  	});
 
 	Template.movieTable.movies = function(){
 	    return Movies.find({}, {sort: {title:1}});

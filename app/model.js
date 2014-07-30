@@ -9,18 +9,17 @@ var operationAllowed = function(){
 	return true;
 }
 
-var stringWithValue = function(valueToCheck){
+var stringWithValue = Match.Where(function(valueToCheck){
 	check(valueToCheck, String);
-	return x.length > 0;
-}
+	return valueToCheck.length > 0;
+});
 
-var validYear = function(yearToCheck){		
+var validYear = Match.Where(function(yearToCheck){		
 	check(yearToCheck, Number);
 	var movieHistoryStartYear = 1890; 
 	var currentYear = (new Date().getFullYear());
 	return (yearToCheck >= movieHistoryStartYear && yearToCheck <= currentYear);
-}
-
+});
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -61,14 +60,14 @@ Genres.allow({
 // Methods
 
 Meteor.methods({
-	createMovie: function (data){
+	createMovie: function (data){		
 		check(data, {
 			title: stringWithValue,
 			release_year: validYear,
 			genre: stringWithValue
 		});
 
-		var genre = Genres.findOne(data.genere);
+		var genre = Genres.findOne(data.genre);
 		if(!genre) {
 			throw new Meteor.error(404, 'No such genre!');
 		}
@@ -78,7 +77,7 @@ Meteor.methods({
 			_id: id,
 			title: data.title,
 			release_year: data.release_year,
-			genre: genre._id
+			genre: data.genere
 		});
 		return id;
 	}	
