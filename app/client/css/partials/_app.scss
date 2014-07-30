@@ -1,3 +1,5 @@
+$header-height: 74px;
+
 body {
   color: $my-color;
   background-color: $my-background-color;
@@ -11,8 +13,6 @@ body {
 	width: 90%;	
 	margin: 0 auto;	
 }
-
-$header-height: 74px;
 
 #header {
 	position: absolute;
