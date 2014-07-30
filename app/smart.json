@@ -1,8 +1,5 @@
 {
   "packages": {
-    "sass": {},
-    "velocity": {},
-    "jasmine-unit": {},
-    "velocity-html-reporter": {}
+    "sass": {}
   }
 }
