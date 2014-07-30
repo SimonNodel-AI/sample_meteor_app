@@ -1,3 +1,17 @@
+body {
+  color: $my-color;
+  background-color: $my-background-color;
+}
+
+#app-body {	
+	position: absolute;
+	top: $header-height;
+	left: 5%;
+	bottom: 0;
+	width: 90%;	
+	margin: 0 auto;	
+}
+
 $header-height: 74px;
 
 #header {
@@ -13,4 +27,6 @@ $header-height: 74px;
 	  width: 90%;
 	  margin: 0 auto;	  	  
 	}
-}
+} 
+
+
