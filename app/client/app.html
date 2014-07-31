@@ -73,7 +73,41 @@
 
 <template name="movieTable">
     <div id="movies-table">
-        <h3>movie table goes here</h3>
+        <div id="movies-table-contaner">
+            <table>
+                 <colgroup>
+                    <col span="1" class="column-width-movie-title">
+                    <col span="1" class="column-width-release-year">
+                    <col span="1" class="column-width-genre">
+                    <col span="1" class="column-width-edit">
+                    <col span="1" class="column-width-delete">
+                </colgroup>
+                {{> moviesTableHeader}}            
+                <tbody>
+                    {{#each movies}}
+                        <tr>
+                            <td>{{title}}</td>
+                            <td>{{release_year}}</td>
+                            <td>{{genre.name}}</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                    {{/each}}                
+                </tbody>
+            </table>
+        </div>        
     </div>
+</template>
+
+<template name="moviesTableHeader">
+    <thead>
+        <tr>
+            <th>Movie Title</th>
+            <th>Release Year</th>
+            <th>Genre</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+    </thead> 
 </template>
  

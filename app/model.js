@@ -77,7 +77,7 @@ Meteor.methods({
 			_id: id,
 			title: data.title,
 			release_year: data.release_year,
-			genre: data.genere
+			genre: genre
 		});
 		return id;
 	}	
