@@ -90,8 +90,15 @@ body {
 		width: 25rem;
 		font-size: $font-size-large;
 	}
-}
 
+	button {
+		@include button(darken($button-bacground-color, 5%), custom-white(0.7), $button-bacground-color);
+		padding: 2rem;
+		font-size: $font-size-large;
+		font-weight: bold;
+		@include round-corners(10px);
+	}
+}
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -208,10 +215,13 @@ h3.no-movies {
 // Add some style back
 
 input[type="text"], input[type="number"], button {
+	color: $default-text-color;
 	font-size: $font-size-regular;	
 }
 
 input, select, textarea {
+  cursor: pointer;
+  color: $default-text-color;
   height: 3rem;
   vertical-align: top;
   @include box-sizing();
