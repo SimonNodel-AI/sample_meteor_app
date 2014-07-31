@@ -96,9 +96,6 @@ body {
 // Movies Table
 $movie-table-corner-radius: 4px;
 
-.column-ellipsis {
-	
-}
 
 #movies-table {
 	margin-top: 2rem;
@@ -154,7 +151,6 @@ $movie-table-corner-radius: 4px;
 	}
 }
 
-
 .column-width {
 	&-movie-title {
 		widh: 50%;
@@ -172,6 +168,26 @@ $movie-table-corner-radius: 4px;
 	&-delete {
 		width: 5%;
 	}
+}
+
+.edit-icon {
+	font-size: $font-size-regular;
+	cursor: pointer;
+	&:hover {
+		color: $edit-icon-hover-color;
+	}
+}
+
+.trash-icon {
+	font-size: $font-size-regular;
+	cursor: pointer;
+	&:hover {
+		color: $trash-icon-hover-color;
+	}
+}
+
+.text-center {
+	text-align: center;
 }
 
 
@@ -211,3 +227,4 @@ input, select, textarea {
 .float-right {
 	float: right;
 }
+
