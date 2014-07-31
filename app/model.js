@@ -29,17 +29,7 @@ Movies = new Meteor.Collection("movies");
 
 Movies.allow({
 	insert: operationNotAllowed,
-	update: function(movie, fields) {
-		var updatableFields = ["title", "release_year", "genre"];
-		var disallowedFields = _.difference(fields, updatableFields);
-		if(disallowedFields.length > 0) {
-			_.each(disallowedFields, function(field){
-				console.error("You cannot modify " + field + " this field.");
-			})
-			return false;
-		}
-		return true;
-	},
+	update: operationNotAllowed,
 	remove: operationAllowed
 });
 
@@ -59,20 +49,23 @@ Genres.allow({
 ////////////////////////////////////////////////////////////////////////////////
 // Methods
 
+var getGenre = function(genreId){
+	var genre = Genres.findOne(genreId);
+	if(!genre) {
+		throw new Meteor.error(404, 'No such genre!');
+	}
+	return genre;
+}
+
 Meteor.methods({
 	createMovie: function (data){		
-		check(data, {
+		check(data, {			
 			title: stringWithValue,
 			release_year: validYear,
 			genre: stringWithValue
 		});
-
-		var genre = Genres.findOne(data.genre);
-		if(!genre) {
-			throw new Meteor.error(404, 'No such genre!');
-		}
-
-		var id = data._id || Random.id();
+		var genre = getGenre(data.genre);	
+		var id = Random.id();
 		Movies.insert({
 			_id: id,
 			title: data.title,
@@ -80,5 +73,23 @@ Meteor.methods({
 			genre: genre
 		});
 		return id;
-	}	
+	},
+
+	updateMovie: function(data) {
+		check(data, {
+			_id: stringWithValue,
+			title: stringWithValue,
+			release_year: validYear,
+			genre: stringWithValue
+		});
+
+		var genre = getGenre(data.genre);
+		Movies.update({_id: data._id}, 
+			{$set: {
+				title: data.title,
+				release_year: data.release_year,
+				genre: genre
+			}
+		});
+	}
 });

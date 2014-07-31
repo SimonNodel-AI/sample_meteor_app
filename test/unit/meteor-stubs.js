@@ -1,7 +1,7 @@
 //This file is from https://github.com/xolvio/rtd/tree/master/lib and was modified to accomodate testing
 
 /*jshint -W020, -W079 */
-var Npm, Deps, Package, Random, Session, Template, UI, Accounts, Meteor, process, __meteor_bootstrap__, share, Email, EJSON;
+var $, Npm, Deps, Package, Random, Session, Template, UI, Accounts, Meteor, process, __meteor_bootstrap__, share, Email, EJSON;
 
 (function () {
 	"use strict";
@@ -11,6 +11,15 @@ var Npm, Deps, Package, Random, Session, Template, UI, Accounts, Meteor, process
 
 	var colFun = function (collectionName) {
 		Meteor.instantiationCounts[collectionName] = Meteor.instantiationCounts[collectionName] ? Meteor.instantiationCounts[collectionName] + 1 : 1;
+	};
+
+	$ = function() {
+		return {
+			value: '',
+			val: function(){},
+			focus: function(){},
+			select: function(){}
+		};
 	};
 
 	Meteor = {

@@ -82,8 +82,10 @@
 
     describe('Template.movieEntryForm.events', function(){
         describe('click #add-update-button', function(){
-            it('should invoke "createMovie" Meteor method', function(){
-                var mockTemplateInstance = {
+
+            var mockTemplateInstance;
+            beforeEach(function(){
+                mockTemplateInstance = {
                     find: function(what){
                         if(what === '#movie-title') { 
                             return {value:'Hackers'};
@@ -96,20 +98,67 @@
                         }
                     }
                 };
+
                 spyOn(Meteor, 'call');
+            });
+
+            it('should invoke "createMovie" Meteor method when selected_movie is null', function(){
+                Session.set('selected_movie', null);                
+                
                 var eventHandler = Template.movieEntryForm.eventMap['click #add-update-button'];
                 var result = eventHandler({}, mockTemplateInstance);
                 expect(result).toBe(false);
                 expect(Meteor.call).toHaveBeenCalledWith(
-                    'createMovie', {
+                    'createMovie', 
+                    {
                         title: 'Hackers',
                         release_year: 1995,
                         genre: 'DEADBEFF'
                     }
                 );
-            })
+            });
 
+            it('should invoke "updateMovie" Meteor method when selected_movie is NOT null', function(){
+                Session.set('selected_movie', {_id:'AABBCC'});                                
+                var eventHandler = Template.movieEntryForm.eventMap['click #add-update-button'];
+                var result = eventHandler({}, mockTemplateInstance);
+                expect(result).toBe(false);
+                expect(Meteor.call).toHaveBeenCalledWith(
+                    'updateMovie', 
+                    {
+                        _id: 'AABBCC',
+                        title: 'Hackers',
+                        release_year: 1995,
+                        genre: 'DEADBEFF'
+                    }
+                );
+            }); 
         });
     })
 
+    describe('Template.movieTable.events', function(){
+        describe('click .edit-icon', function(){
+            var mockMovie;            
+
+            beforeEach(function(){
+                mockMovie = {title:'foobar', _id:'12345', release_year: 1985, genre:{_id:'aaa'}};                
+            });
+
+            it('should save movie instance to session', function(){                
+                spyOn(Session, 'set');
+                var eventHandler = Template.movieTable.eventMap['click .edit-icon'];
+                eventHandler.apply(mockMovie);
+                expect(Session.set).toHaveBeenCalledWith('selected_movie', mockMovie);
+            });
+        });
+
+        describe('click .trash-icon', function(){
+            it('should call Movies.remove', function(){
+                spyOn(Movies, 'remove');
+                var eventHandler = Template.movieTable.eventMap['click .trash-icon'];
+                eventHandler.apply({title:'foobar', _id:'12345'});
+                expect(Movies.remove).toHaveBeenCalledWith('12345');
+            })
+        });
+    });
 })();
