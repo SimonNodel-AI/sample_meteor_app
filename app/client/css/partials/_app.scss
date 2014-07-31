@@ -1,3 +1,7 @@
+$header-height: 74px;
+
+$form-padding: 1.25rem;
+
 body {
   color: $my-color;
   background-color: $my-background-color;
@@ -12,8 +16,6 @@ body {
 	margin: 0 auto;	
 }
 
-$header-height: 74px;
-
 #header {
 	position: absolute;
 	background-color: $my-header-color;
@@ -23,10 +25,218 @@ $header-height: 74px;
 	width: 100%;
 	margin: 0 auto;
 
-	& h1 {		  
+	& h1 {		
+	  padding-top: 1.5rem;
+	  font-size: $font-size-x-large;
 	  width: 90%;
 	  margin: 0 auto;	  	  
 	}
 } 
 
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Movie Entry Form
+
+#movie-entry-form { 
+	overflow: hidden;    
+	padding-top: 2rem;
+	padding-bottom: 1rem;
+	border-bottom: 2px solid $border-color;
+	position: relative;
+
+
+	input {
+    	display:block;
+	}
+
+	label {		
+		display:block;
+		padding-bottom: 0.25rem;
+	}
+
+	#add-update-button {
+		position: absolute;
+		right: $form-padding;
+		bottom: auto;	
+		height: 4rem;	
+		padding: 0 2em;		
+
+		@include box-sizing();
+		
+	}
+
+	.form-control-group {
+		display: inline-block;
+		padding: 0 $form-padding;
+
+		label {
+			color: $my-color;
+		}
+	}
+
+	#movie-title {
+		float: left;
+		width: 40rem;
+	}
+
+	#movie-release-year {
+		float: left;
+		width: 14rem;
+	}
+
+	#genre-list {
+		float: left;
+		width: 25rem;
+		font-size: $font-size-large;
+	}
+
+	button {
+		@include button(darken($button-bacground-color, 5%), custom-white(0.7), $button-bacground-color);
+		padding: 2rem;
+		font-size: $font-size-large;
+		font-weight: bold;
+		@include round-corners(10px);
+	}
+}
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Movies Table
+$movie-table-corner-radius: 4px;
+
+
+#movies-table {
+	margin-top: 2rem;
+	width: 100%;	
+}
+
+#movies-table-contaner {	
+	margin: 0px;
+	padding: 0px;
+	width: 100%;
+	border: 1px solid $border-color;
+	@include round-corners($movie-table-corner-radius);
+	@include box-shadow(10px, 10px, 5px, $border-color);
+
+	table {
+		border-collapse: collapse;
+		border-spacing: 0;
+		width:100%;
+		height: 100%;
+		margin: 0px;
+		padding: 0px;	
+
+		tr:hover td{
+			background-color:$my-color;
+			color: $darker-gray;			
+		}
+
+		thead th {				
+			@include gradient(custom-white(0.3), $darker-gray);
+			font-size: $font-size-large;
+			border: 0px solid $border-color;
+			text-align: left;			
+			border-width: 0px 0px 1px 1px;
+			padding: 0.5rem;
+			padding-top: 0.75rem;			
+
+			
+			&:last-child {
+				@include top-right-border-radius($movie-table-corner-radius);				
+			}
+			
+			&:first-child {
+				@include top-left-border-radius($movie-table-corner-radius);
+			}
+		}
+
+		td {						
+			vertical-align: middle;
+			padding: 0.5rem;
+			padding-left: 0.75rem;
+			font-size: $font-size-regular;
+		}
+	}
+}
+
+.column-width {
+	&-movie-title {
+		widh: 50%;
+	}
+
+	&-release-year {
+		width: 14%;
+	}
+	&-genre {
+		width: 26%;
+	}
+	&-edit {
+		width: 5%;
+	}
+	&-delete {
+		width: 5%;
+	}
+}
+
+.edit-icon {
+	font-size: $font-size-regular;
+	cursor: pointer;
+	&:hover {
+		color: $edit-icon-hover-color;
+	}
+}
+
+.trash-icon {
+	font-size: $font-size-regular;
+	cursor: pointer;
+	&:hover {
+		color: $trash-icon-hover-color;
+	}
+}
+
+.text-center {
+	text-align: center;
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// No Movies
+
+h3.no-movies {	
+	padding-top: 3rem;
+	clear:both;	
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Add some style back
+
+input[type="text"], input[type="number"], button {
+	color: $default-text-color;
+	font-size: $font-size-regular;	
+}
+
+input, select, textarea {
+  cursor: pointer;
+  color: $default-text-color;
+  height: 3rem;
+  vertical-align: top;
+  @include box-sizing();
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Helper
+
+.float-left {
+	float:left;
+}
+
+.float-right {
+	float: right;
+}
 

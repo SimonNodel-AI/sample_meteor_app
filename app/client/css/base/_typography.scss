@@ -14,6 +14,21 @@ $font-size-large: $font-size-regular + 0.2em;
 $font-size-x-large: $font-size-large + 1.6em; 
 $font-size-xx-large: $font-size-x-large + 1.6em;
 
+.font-size-regular {
+	font-size: $font-size-regular;
+}
+.font-size-large {
+	font-size: $font-size-large;
+}
+.font-size-x-large {
+	font-size: $font-size-x-large;
+}
+.font-size-xx-large {
+	font-size: $font-size-xx-large;
+}
+
+
+
 h1 {
 	font-size: $font-size-xx-large;	
 }
@@ -22,7 +37,7 @@ h2 {
 	font-size: $font-size-x-large;	
 }
 
-h3 {	
+h3, label {	
 	font-size: $font-size-large;
 }
 

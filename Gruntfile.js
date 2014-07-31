@@ -9,13 +9,13 @@
             coverage: {
                 options: {
                     thresholds: {
-                        'statements': 96,
-                        'branches': 96,
-                        'lines': 96,
-                        'functions': 96
+                        'statements': 90,
+                        'branches': 90,
+                        'lines': 90,
+                        'functions': 90
                     },
                     dir: 'coverage',
-                    root: '.tmp'
+                    root: ''
                 }
             },
             karma: {
