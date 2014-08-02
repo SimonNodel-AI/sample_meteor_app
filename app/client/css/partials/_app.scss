@@ -222,6 +222,7 @@ $movie-table-corner-radius: 4px;
 
 .sort-icon {
 	@extend .icon-base;
+	padding-top: 0.2rem;
 	font-size: $font-size-regular;
 }
 
@@ -236,7 +237,6 @@ $movie-table-corner-radius: 4px;
 		@extend .sort-icon;
 	}
 }
-
 
 
 
