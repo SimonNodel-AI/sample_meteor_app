@@ -1,6 +1,9 @@
 (function () {
         
 	Session.setDefault("selected_movie", null);
+	Session.setDefault("title-sort-direction", null);
+	Session.setDefault("year-sort-direction", null);
+	Session.setDefault("genre-sort-direction", null);
 
 	var genresHandle = Meteor.subscribe("genres");
 	var moviesHandle = Meteor.subscribe("movies");
@@ -66,7 +69,18 @@
   	});
 
 	Template.movieTable.movies = function(){
-	    return Movies.find({}, {sort: {title:1}});
+		var titleSort = Session.get("title-sort-direction");
+		var yearSort = Session.get("year-sort-direction");
+		var genreSort = Session.get("genre-sort-direction");
+		var sortParameters = {};
+		if(titleSort !== null) {
+			sortParameters.title_low_case = titleSort;
+		} else if(yearSort !== null){
+			sortParameters.release_year = yearSort;
+		} else if(genreSort !== null){
+			sortParameters.genre_low_case = genreSort;
+		}
+	    return Movies.find({}, {sort: sortParameters});
 	}
 
 	Template.movieTable.events({
@@ -84,6 +98,63 @@
 			console.debug("Removing %s movie.", this.title);
 			Movies.remove(this._id);			
 		}
+	});
+
+	var sortDirectionToIconClass = function(direction) {
+		if(direction === 1) {
+			return 'fa-sort-asc';
+		}
+		if(direction === -1) {
+			return 'fa-sort-desc';
+		}
+		return 'fa-sort';
+	}
+
+	Template.moviesTableHeader.titleSortIcon = function(){
+		var sortDirection = Session.get("title-sort-direction");
+		return sortDirectionToIconClass(sortDirection);
+	}
+
+	Template.moviesTableHeader.yearSortIcon = function(){
+		var sortDirection = Session.get("year-sort-direction");
+		return sortDirectionToIconClass(sortDirection);
+	}
+
+	Template.moviesTableHeader.genreSortIcon = function(){
+		var sortDirection = Session.get("genre-sort-direction");
+		return sortDirectionToIconClass(sortDirection);
+	}
+
+	var setNextSortDirectionFor = function(columSortKey) {
+		var sortDirection = Session.get(columSortKey);
+		if(sortDirection === 1) {
+			sortDirection = -1;
+		} else if(sortDirection === -1) {
+			sortDirection = null;
+		} else if(sortDirection === null) {
+			sortDirection = 1;
+		} else {
+			sortDirection = null;
+		}	
+		Session.set(columSortKey, sortDirection);
+	}
+
+	Template.moviesTableHeader.events({
+		"click .sort-icon-title": function(){
+			Session.set("year-sort-direction", null);
+			Session.set("genre-sort-direction", null);
+			setNextSortDirectionFor("title-sort-direction");
+		},
+		"click .sort-icon-year": function(){
+			Session.set("title-sort-direction", null);
+			Session.set("genre-sort-direction", null);
+			setNextSortDirectionFor("year-sort-direction");
+		},
+		"click .sort-icon-genre": function(){
+			Session.set("title-sort-direction", null);
+			Session.set("year-sort-direction", null);			
+			setNextSortDirectionFor("genre-sort-direction");
+		}	
 	});
 
 })();

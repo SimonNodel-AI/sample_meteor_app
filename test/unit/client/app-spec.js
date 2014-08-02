@@ -6,6 +6,7 @@
     Template.stub('appBody');
     Template.stub('movieEntryForm');
     Template.stub('movieTable');
+    Template.stub('moviesTableHeader');
 
     Movies = new Meteor.Collection('movies');
     Genres = new Meteor.Collection('genres');
@@ -61,11 +62,43 @@
     });
 
     describe('Template.movieTable.movies', function() {
-        it('should return a list of movies sorted by title', function(){
+        beforeEach(function(){
+            Session.set('title-sort-direction', null);
+            Session.set('year-sort-direction', null);
+            Session.set('genre-sort-direction', null);
+        });
+
+        it('should return a list of movies with empty sort options', function(){
             spyOn(Movies, 'find').andCallThrough();            
             Template.movieTable.movies();
-            expect(Movies.find).toHaveBeenCalledWith({}, {sort: {title:1}});
-        });      
+            expect(Movies.find).toHaveBeenCalledWith({}, {sort: {}});
+        });
+
+        var testSort = function(sessionKey, columnName, sortKey){
+            describe('sort with Session("' + sessionKey + '")', function(){
+                it('should return a list of movies sorted by ' + columnName + ' in ascending order', function(){
+                    Session.set(sessionKey, 1);
+                    spyOn(Movies, 'find').andCallThrough();            
+                    Template.movieTable.movies();
+                    expectedSortObject = {};
+                    expectedSortObject[sortKey] = 1;
+                    expect(Movies.find).toHaveBeenCalledWith({}, {sort: expectedSortObject});
+                });
+
+                it('should return a list of movies sorted by ' + columnName + ' in descending order', function(){
+                    Session.set(sessionKey, -1);
+                    spyOn(Movies, 'find').andCallThrough();            
+                    Template.movieTable.movies();
+                    expectedSortObject = {};
+                    expectedSortObject[sortKey] = -1;
+                    expect(Movies.find).toHaveBeenCalledWith({}, {sort: expectedSortObject});
+                });
+            });    
+        };
+        
+        testSort('title-sort-direction', 'title', 'title_low_case');
+        testSort('year-sort-direction', 'year', 'release_year');
+        testSort('genre-sort-direction', 'genre', 'genre_low_case');
     });
 
     describe('Template.movieEntryForm.buttonTitle', function(){
@@ -159,6 +192,80 @@
                 eventHandler.apply({title:'foobar', _id:'12345'});
                 expect(Movies.remove).toHaveBeenCalledWith('12345');
             })
+        });
+    });
+
+    describe('moviesTableHeader', function(){
+        beforeEach(function(){
+            Session.set('title-sort-direction', null);
+            Session.set('year-sort-direction', null);
+            Session.set('genre-sort-direction', null);
+        });
+
+        var testSortIcon = function(sessionKey, testFunctionName) {
+            describe(testFunctionName, function(){
+                it('shoud return fa-sort when Session("' + sessionKey + '") is null', function(){
+                    expect(Template.moviesTableHeader[testFunctionName]()).toEqual('fa-sort');
+                });
+                it('should return fa-sort-asc when Session("' + sessionKey + '") is 1', function(){
+                    Session.set(sessionKey, 1);
+                    expect(Template.moviesTableHeader[testFunctionName]()).toEqual('fa-sort-asc'); 
+                });
+                it('should return fa-sort-desc when Session("' + sessionKey + '") is -1', function(){
+                    Session.set(sessionKey, -1);
+                    expect(Template.moviesTableHeader[testFunctionName]()).toEqual('fa-sort-desc'); 
+                });           
+            });
+        };
+
+        testSortIcon('title-sort-direction', 'titleSortIcon');
+        testSortIcon('year-sort-direction', 'yearSortIcon');
+        testSortIcon('genre-sort-direction', 'genreSortIcon');
+
+        describe('events', function(){
+
+            testEvent = function(sessionKey, eventKey, otherSortSessionKeys) {
+                describe(eventKey, function(){                
+                    it('should cycle Sesstion("' + sessionKey + '") values', function(){
+                        var eventHandler = Template.moviesTableHeader.eventMap[eventKey];
+                        eventHandler();
+                        expect(Session.get(sessionKey)).toBe(1);
+                        eventHandler();
+                        expect(Session.get(sessionKey)).toBe(-1);
+                        eventHandler();
+                        expect(Session.get(sessionKey)).toBe(null);
+                        eventHandler();
+                        expect(Session.get(sessionKey)).toBe(1);
+                    });
+
+                    it('should clear other session sort variables', function(){
+                        Session.set(sessionKey, null);
+                        Session.set(otherSortSessionKeys[0], 42);
+                        Session.set(otherSortSessionKeys[1], 42);
+                        var eventHandler = Template.moviesTableHeader.eventMap[eventKey];
+                        eventHandler();
+                        expect(Session.get(sessionKey)).toBe(1);
+                        expect(Session.get(otherSortSessionKeys[0])).toBe(null);
+                        expect(Session.get(otherSortSessionKeys[1])).toBe(null);
+                    });
+
+                    it('should set Session("' + sessionKey + '") to null when its value is invalid', function(){
+                        Session.set(sessionKey, 4242);
+                        var eventHandler = Template.moviesTableHeader.eventMap[eventKey];
+                        eventHandler();
+                        expect(Session.get(sessionKey)).toBe(null);
+                    });
+                });
+            };
+
+            testEvent('title-sort-direction', 'click .sort-icon-title', [
+                'year-sort-direction', 'genre-sort-direction']);
+
+            testEvent('year-sort-direction', 'click .sort-icon-year', [
+                'title-sort-direction', 'genre-sort-direction']);
+
+            testEvent('genre-sort-direction', 'click .sort-icon-genre', [
+                'title-sort-direction', 'year-sort-direction']);           
         });
     });
 })();

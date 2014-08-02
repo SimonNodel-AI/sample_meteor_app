@@ -69,8 +69,10 @@ Meteor.methods({
 		Movies.insert({
 			_id: id,
 			title: data.title,
-			release_year: data.release_year,
-			genre: genre
+			title_low_case: data.title.toLowerCase(),
+			release_year: data.release_year,		
+			genre: genre,
+			genre_low_case: genre.name.toLowerCase()
 		});
 		return id;
 	},
@@ -78,7 +80,7 @@ Meteor.methods({
 	updateMovie: function(data) {
 		check(data, {
 			_id: stringWithValue,
-			title: stringWithValue,
+			title: stringWithValue,			
 			release_year: validYear,
 			genre: stringWithValue
 		});
@@ -87,8 +89,10 @@ Meteor.methods({
 		Movies.update({_id: data._id}, 
 			{$set: {
 				title: data.title,
+				title_low_case: data.title.toLowerCase(),
 				release_year: data.release_year,
-				genre: genre
+				genre: genre,
+				genre_low_case: genre.name.toLowerCase(),
 			}
 		});
 	}
