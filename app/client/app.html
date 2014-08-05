@@ -44,14 +44,14 @@
     <div id="movie-entry-form">
         <div class="form-control-group">
             <label for="">Movie Title</label>
-            <input id="movie-title" type="text" />
+            <input id="movie-title" type="text" /> 
+            <span  class="validation">&nbsp;{{titleValidationMessage}}</span>
         </div>
-
         <div class="form-control-group">
             <label for="">Release Year</label>
             <input id="movie-release-year" type="number" />
+            <span id="year-validation">&nbsp;{{yearValidationMessage}}</span>
         </div>
-
         <div class="form-control-group">   
             <label for="genre-list">Genre</label>
             <select id="genre-list" name="genre-list">            
@@ -59,11 +59,11 @@
                     <option value="{{_id}}">{{name}}</option>
                 {{/each}}            
             </select>
+            <span>&nbsp;</span>
         </div>
-
         <div class="form-control-group">
-            <button id="add-update-button" type="button">{{ buttonTitle }}</button>
-        </div>
+            <button id="add-update-button" type="button">{{ buttonTitle }}</button>            
+        </div>        
     </div>
 </template>
 

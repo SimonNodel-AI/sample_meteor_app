@@ -113,10 +113,26 @@
         });
     });
 
+    describe('Template.movieEntryForm.titleValidationMessage', function(){
+        it('should return Session.title-validation-error-message', function(){
+            Session.set('title-validation-error-message', 'abc');
+            expect(Template.movieEntryForm.titleValidationMessage()).toEqual('abc');
+        });
+    });
+
+    describe('Template.movieEntryForm.yearValidationMessage', function(){
+        it('should return Session.year-validation-error-message', function(){
+            Session.set('year-validation-error-message', '1920');
+            expect(Template.movieEntryForm.yearValidationMessage()).toEqual('1920');
+        });
+    });
+
     describe('Template.movieEntryForm.events', function(){
         describe('click #add-update-button', function(){
 
             var mockTemplateInstance;
+            var eventHandler;
+
             beforeEach(function(){
                 mockTemplateInstance = {
                     find: function(what){
@@ -132,13 +148,83 @@
                     }
                 };
 
+                eventHandler = Template.movieEntryForm.eventMap['click #add-update-button'];
                 spyOn(Meteor, 'call');
             });
 
+
+            it('should set Sesison.title-validation-error-message when title is missing', function(){
+                Session.set('title-validation-error-message', '');
+                var result = eventHandler({}, mockTemplateInstance);                
+                mockTemplateInstance.find = function(what){
+                    if(what === '#movie-title') { 
+                        return {value: ''};
+                    }
+                    else {
+                        return {value: ''};
+                    }
+                };
+                var result = eventHandler({}, mockTemplateInstance);
+                expect(Session.get('title-validation-error-message')).toEqual('* Required field');
+            });
+
+
+            it('should set Sesison.year-validation-error-message when year < 1890', function(){
+                Session.set('year-validation-error-message', '');
+                var result = eventHandler({}, mockTemplateInstance);                
+                mockTemplateInstance.find = function(what){
+                    if(what === '#movie-title') { 
+                            return {value:'Hackers'};
+                    } else if(what === '#movie-release-year') { 
+                        return {value: '1000'};
+                    }
+                    else {
+                        return {value: 'DEADBEFF'};
+                    }
+                };
+                var result = eventHandler({}, mockTemplateInstance);
+                expect(Session.get('year-validation-error-message')).toEqual('Must be >= 1890');
+            });
+
+
+            it('should set Sesison.year-validation-error-message when year > currentYear', function(){
+                Session.set('year-validation-error-message', '');
+                var result = eventHandler({}, mockTemplateInstance);    
+                var currentYear = (new Date().getFullYear());
+                mockTemplateInstance.find = function(what){
+                    if(what === '#movie-title') { 
+                            return {value:'Hackers'};
+                    } else if(what === '#movie-release-year') { 
+                        return {value:  currentYear + 100};
+                    }
+                    else {
+                        return {value: 'DEADBEFF'};
+                    }
+                };
+                var result = eventHandler({}, mockTemplateInstance);
+                expect(Session.get('year-validation-error-message')).toEqual('Must be <= ' + currentYear);
+            });
+
+            it('should set Sesison.year-validation-error-message when year is not a number', function(){
+                Session.set('year-validation-error-message', '');
+                var result = eventHandler({}, mockTemplateInstance);    
+                mockTemplateInstance.find = function(what){
+                    if(what === '#movie-title') { 
+                            return {value:'Hackers'};
+                    } else if(what === '#movie-release-year') { 
+                        return {value:  'zzz'};
+                    }
+                    else {
+                        return {value: 'DEADBEFF'};
+                    }
+                };
+                var result = eventHandler({}, mockTemplateInstance);
+                expect(Session.get('year-validation-error-message')).toEqual('Not a number');
+            });
+
+
             it('should invoke "createMovie" Meteor method when selected_movie is null', function(){
                 Session.set('selected_movie', null);                
-                
-                var eventHandler = Template.movieEntryForm.eventMap['click #add-update-button'];
                 var result = eventHandler({}, mockTemplateInstance);
                 expect(result).toBe(false);
                 expect(Meteor.call).toHaveBeenCalledWith(
@@ -153,7 +239,6 @@
 
             it('should invoke "updateMovie" Meteor method when selected_movie is NOT null', function(){
                 Session.set('selected_movie', {_id:'AABBCC'});                                
-                var eventHandler = Template.movieEntryForm.eventMap['click #add-update-button'];
                 var result = eventHandler({}, mockTemplateInstance);
                 expect(result).toBe(false);
                 expect(Meteor.call).toHaveBeenCalledWith(

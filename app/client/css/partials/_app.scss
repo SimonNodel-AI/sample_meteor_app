@@ -56,7 +56,7 @@ body {
 	margin: 0 auto;
 
 	& h1 {		
-	  padding-top: 1.5rem;
+	  padding-top: 2rem;
 	  font-size: $font-size-x-large;
 	  width: 90%;
 	  margin: 0 auto;	  	  
@@ -74,6 +74,7 @@ body {
 	padding-bottom: 1rem;
 	border-bottom: 2px solid $border-color;
 	position: relative;
+	height: 7rem;
 
 
 	input {
@@ -88,7 +89,7 @@ body {
 	#add-update-button {
 		position: absolute;
 		right: $form-padding;
-		bottom: auto;	
+		bottom: 2.25rem;	
 		height: 4rem;	
 		padding: 0 2em;		
 
@@ -98,11 +99,11 @@ body {
 
 	.form-control-group {
 		display: inline-block;
-		padding: 0 $form-padding;
+		padding: 0 $form-padding;				
 
 		label {
 			color: $my-color;
-		}
+		}		
 	}
 
 	#movie-title {
@@ -123,10 +124,19 @@ body {
 
 	button {
 		@include button(darken($button-bacground-color, 5%), custom-white(0.7), $button-bacground-color);
-		padding: 2rem;
+		padding-left: 1.25rem !important;
+		padding-right: 1.25rem !important;
 		font-size: $font-size-large;
 		font-weight: bold;
 		@include round-corners(10px);
+	}
+
+	.validation {
+		color: $red;
+	}
+
+	#year-validation {
+		color: $red;
 	}
 }
 

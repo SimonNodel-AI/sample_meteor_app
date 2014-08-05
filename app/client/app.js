@@ -4,6 +4,8 @@
 	Session.setDefault("title-sort-direction", null);
 	Session.setDefault("year-sort-direction", null);
 	Session.setDefault("genre-sort-direction", null);
+	Session.setDefault("year-validation-error-message", "");
+	Session.setDefault("title-validation-error-message", "");
 
 	var genresHandle = Meteor.subscribe("genres");
 	var moviesHandle = Meteor.subscribe("movies");
@@ -31,6 +33,47 @@
 	    return "Update Movie"
 	}
 
+	
+	Template.movieEntryForm.titleValidationMessage = function(){
+		return Session.get("title-validation-error-message");
+	}
+
+	Template.movieEntryForm.yearValidationMessage = function(){
+		return Session.get("year-validation-error-message");
+	}
+
+
+	var validateReleaseYear = function (yearToValildate) {
+		var isValid = true;
+		var movieHistoryStartYear = 1890;
+		var currentYear = (new Date().getFullYear());
+		
+		if(isNaN(yearToValildate)) {
+			Session.set("year-validation-error-message", "Not a number");
+			isValid = false;
+		} else if(yearToValildate < movieHistoryStartYear) {
+			Session.set("year-validation-error-message", "Must be >= " + movieHistoryStartYear);
+			isValid = false;
+		} else if(yearToValildate > currentYear) {
+			Session.set("year-validation-error-message", "Must be <= " + currentYear);
+			isValid = false;
+		}
+
+		if(isValid){
+			Session.set("year-validation-error-message", "");
+		}
+		return isValid;
+	}
+
+	var validateTitle = function(title){		
+		if(!title) {
+			Session.set("title-validation-error-message", "* Required field");
+			return false;
+		}
+		Session.set("title-validation-error-message", "");
+		return true;		
+	}
+
 	var isEdditingMode = function(){
 		return (Session.get("selected_movie") !== null);
 	}
@@ -44,14 +87,22 @@
 	Template.movieEntryForm.events({
   		"click #add-update-button": function (event, template) {
 			var movieTitle = template.find("#movie-title").value;
-			var releaseYear = template.find("#movie-release-year").value;
-			var genre = template.find("#genre-list").value;	
+			var releaseYear = parseInt(template.find("#movie-release-year").value);
+			var genre = template.find("#genre-list").value;
+			console.log('release year: ', releaseYear);
+			var isValidYear = validateReleaseYear(releaseYear);
+			var isValidTitle = validateTitle(movieTitle);
+			
+			if(!isValidYear|| !isValidTitle) {
+				return;
+			}
+
 			if(isEdditingMode()) {				
 				console.debug("Updating %s", movieTitle);
 				Meteor.call("updateMovie", {
 					_id: Session.get("selected_movie")._id,
 	    			title: movieTitle,
-	    			release_year: parseInt(releaseYear),
+	    			release_year: releaseYear,
 	    			genre: genre
 	    		});	    		
 				
